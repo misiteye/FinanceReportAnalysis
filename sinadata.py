@@ -16,7 +16,6 @@ class Xinalang():
         self.info=[]
         self.json=[]
 
-
     def req(self,ninfo):
         try:
             info=json.loads(ninfo)
@@ -34,11 +33,11 @@ class Xinalang():
             url_list.extend([url0,url1,url2])
             data_year=[]
             for url in url_list:
-                headers={}
+                headers= {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
                 response=requests.get(url,headers=headers,timeout=5)
                 #soup=BeautifulSoup(response.content.decode("gb2312"),"html5lib")
-                soup=BeautifulSoup(response.content.decode("gb2312"),"lxml",)
-                #print(soup)
+                soup=BeautifulSoup(response.content.decode("gb2312"),"lxml")
+                print(soup)
                 '''报表日期'''
                 trs = soup.select("tbody tr")
 
