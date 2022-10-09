@@ -24,15 +24,14 @@ class Xinalang():
     def get_one_page(self,url):
     # ....
         retry_count = 5
-        proxy = self.get_proxy().get("proxy")
-        print(proxy)
+        #proxy = self.get_proxy().get("proxy")
+        #print(proxy)
         while retry_count > 0:
             try:
-                print('111')
                 headers= {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
                 #html = requests.get('http://www.example.com', proxies={"http": "http://{}".format(proxy)})
-                response=requests.get(url,headers=headers,timeout=5,proxies={"http": "http://{}".format(proxy)})
-
+                #response=requests.get(url,headers=headers,timeout=5,proxies={"http": "http://{}".format(proxy)})
+                response=requests.get(url,headers=headers,timeout=5)
                 # 使用代理访问
                 return response
             except Exception:
