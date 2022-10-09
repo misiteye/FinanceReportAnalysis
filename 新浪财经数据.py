@@ -110,9 +110,9 @@ class Xinalang():
         try:
             for j in self.json:
                 print(j.decode('unicode-escape'))
-                with open('/Users/misiteye/Documents/git/FinanceReportAnalysis/data.json', 'a') as f:
+                with open('/Users/misiteye/Documents/git/FinanceReportAnalysis/data.json', 'w') as f:
                     #json.dump(j.decode('unicode-escape'), f,ensure_ascii=False)
-                    json.dump(j, f)
+                    json.dump(j.decode('unicode-escape'), f,ensure_ascii=False)
         except:
             print("写入出错！！")
             pass
