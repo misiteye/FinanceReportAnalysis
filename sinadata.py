@@ -18,8 +18,28 @@ class Xinalang():
     def get_proxy(self):
         return requests.get("http://127.0.0.1:5010/get/").json()
 
-    def delete_proxy(proxy):
+    def delete_proxy(self,proxy):
         requests.get("http://127.0.0.1:5010/delete/?proxy={}".format(proxy))
+
+    def get_one_page(self,url):
+    # ....
+        retry_count = 5
+        proxy = self.get_proxy().get("proxy")
+        print(proxy)
+        while retry_count > 0:
+            try:
+                print('111')
+                headers= {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
+                #html = requests.get('http://www.example.com', proxies={"http": "http://{}".format(proxy)})
+                response=requests.get(url,headers=headers,timeout=5,proxies={"http": "http://{}".format(proxy)})
+
+                # 使用代理访问
+                return response
+            except Exception:
+                retry_count -= 1
+        # 删除代理池中代理
+        self.delete_proxy(proxy)
+        return None
 
     def req(self,ninfo):
         try:
@@ -38,14 +58,8 @@ class Xinalang():
             url_list.extend([url0,url1,url2])
             data_year=[]
             for url in url_list:
-                #print(url)
-                print('111')
-                #proxy = get_proxy().get("proxy")
-                proxy = self.get_proxy().get("proxy")
-                print(proxy)
-        #print('2222')
-                headers= {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
-                response=requests.get(url,headers=headers,timeout=5,proxies={"http": "http://{}".format(proxy)})
+                #headers= {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
+                response=self.get_one_page(url)
                 #print(response.status_code)
                 #soup=BeautifulSoup(response.content.decode("gb2312"),"html5lib")
                 soup=BeautifulSoup(response.content.decode("gb2312"),"lxml")
