@@ -75,7 +75,7 @@ class Xinalang():
     def scheduler(self):
         year_list=[2014,2015,2016,2017,2018,2019,2020,2021,2022]
         #year_list=[2014]
-        with open("./stockCode.txt",encoding='gbk') as f:
+        with open("./stockCode.txt") as f:
             lines=f.readlines()
 
         for line in lines:
