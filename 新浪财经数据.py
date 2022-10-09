@@ -75,7 +75,7 @@ class Xinalang():
     def scheduler(self):
         year_list=[2014,2015,2016,2017,2018,2019,2020,2021,2022]
         #year_list=[2014]
-        with open("/Users/misiteye/Documents/git/FinanceReportAnalysis/stockCode.txt") as f:
+        with open("./stockCode.txt") as f:
             lines=f.readlines()
 
         for line in lines:
@@ -110,7 +110,7 @@ class Xinalang():
         try:
             for j in self.json:
                 #print(j.decode('unicode-escape'))
-                with open('/Users/misiteye/Documents/git/FinanceReportAnalysis/data.json', 'a') as f:
+                with open('./data.json', 'a') as f:
                     json.dump(j.decode('unicode-escape'), f,ensure_ascii=False)
         except:
             print("写入出错！！")
