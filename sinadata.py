@@ -15,6 +15,11 @@ class Xinalang():
         self.queue=Queue()
         self.info=[]
         self.json=[]
+    def get_proxy():
+        return requests.get("http://127.0.0.1:5010/get/").json()
+
+    def delete_proxy(proxy):
+        requests.get("http://127.0.0.1:5010/delete/?proxy={}".format(proxy))
 
     def req(self,ninfo):
         try:
@@ -33,8 +38,12 @@ class Xinalang():
             url_list.extend([url0,url1,url2])
             data_year=[]
             for url in url_list:
+                #print(url)
+                print('111')
+                proxy = self.get_proxy().get("proxy")
+                print(proxy)
                 headers= {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
-                response=requests.get(url,headers=headers,timeout=5)
+                response=requests.get(url,headers=headers,timeout=5,proxies={"http": "http://{}".format(proxy)})
                 #soup=BeautifulSoup(response.content.decode("gb2312"),"html5lib")
                 soup=BeautifulSoup(response.content.decode("gb2312"),"lxml")
                 print(soup)
