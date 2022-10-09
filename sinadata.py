@@ -15,7 +15,7 @@ class Xinalang():
         self.queue=Queue()
         self.info=[]
         self.json=[]
-    def get_proxy():
+    def get_proxy(self):
         return requests.get("http://127.0.0.1:5010/get/").json()
 
     def delete_proxy(proxy):
@@ -40,13 +40,16 @@ class Xinalang():
             for url in url_list:
                 #print(url)
                 print('111')
+                #proxy = get_proxy().get("proxy")
                 proxy = self.get_proxy().get("proxy")
                 print(proxy)
+        #print('2222')
                 headers= {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
                 response=requests.get(url,headers=headers,timeout=5,proxies={"http": "http://{}".format(proxy)})
+                #print(response.status_code)
                 #soup=BeautifulSoup(response.content.decode("gb2312"),"html5lib")
                 soup=BeautifulSoup(response.content.decode("gb2312"),"lxml")
-                print(soup)
+                #print(soup)
                 '''报表日期'''
                 trs = soup.select("tbody tr")
 
@@ -135,5 +138,4 @@ if __name__ == '__main__':
     X.scheduler()
 
     print("总耗时：{}秒".format(time.time()-start_time))
-
 
