@@ -109,9 +109,8 @@ class Xinalang():
     def write_json(self):
         try:
             for j in self.json:
-                print(j.decode('unicode-escape'))
-                with open('/Users/misiteye/Documents/git/FinanceReportAnalysis/data.json', 'w') as f:
-                    #json.dump(j.decode('unicode-escape'), f,ensure_ascii=False)
+                #print(j.decode('unicode-escape'))
+                with open('/Users/misiteye/Documents/git/FinanceReportAnalysis/data.json', 'a') as f:
                     json.dump(j.decode('unicode-escape'), f,ensure_ascii=False)
         except:
             print("写入出错！！")
