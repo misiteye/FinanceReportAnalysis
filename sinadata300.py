@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import sys
 import time
+import re
 import requests,json,time
 from bs4 import BeautifulSoup
 
@@ -57,30 +58,45 @@ class sinadata300():
                 #print(soup)
                 #print(soup)
                 '''报表日期'''
+                #print(soup)
                 trs = soup.select("tbody tr")
-
-
+                #trs=soup.find_all('tr')
                 #print(trs)
-                data={}
                 for tr in trs:
+                   
                     #print(tr)
-                    tds=tr.select("td")
-                    if tds != []:
-                        #print(tr)
-                        #decode('unicode-escape')
-                        #tds1=str(tds).decode('unicode-escape')
-                        try:
-                            value = tds[1].text
-                            if value == "--":
-                                value = "0.00"
-                            data[tds[0].text] = value
-                        except:
-                            pass
-                data_year.append(str(data))
+                    #print('==============')
+                    soup1=BeautifulSoup(str(tr),"html.parser")
+                    tds=soup1.find_all('td',limit=2)
 
-            data_["data"]=data_year
-            a=json.dumps(data_,ensure_ascii=False)
+                    #print(tds)
+                    #print('---------')
+                    stock_name=''
+                    stock_alias=''
+                    stock_value=''
+                    for td in tds:
+                        #print(td)
+                        td1 = re.match('.*href=.*',str(td))
+                        if td1:
+                            #print('11111111')
+
+                            #print(td1.group(0).split('type=')[1].split('&amp')[0])
+                            stock_name=td.text
+                            stock_alias=td1.group(0).split(';')[1].split('=')[1].split('&amp')[0]
+                            #print(stock_name+','+stock_alias+','+stock_value)
+                            
+                        else:
+                            #print('22222222')
+                            stock_value=td.text.replace('--','0.00')
+                    
+                    if len(stock_name) > 0:
+                        
+                        stock_info=stock_alias+'('+stock_name+')'+':'+stock_value
+                        data_year.append(stock_info)
+                        data_["data"]=data_year
+
             self.json.append(json.dumps(data_,ensure_ascii=False))
+
 
         except TimeoutError:
             print("超时")
@@ -92,7 +108,7 @@ class sinadata300():
             print(info["SECNAME"], info["year"])
     def scheduler(self):
         year_list=[2014,2015,2016,2017,2018,2019,2020,2021,2022]
-        #year_list=[2014]
+        #year_list=[2022,2021]
         #year_list=[2014]
         with open("./stockCode.txt") as f:
             lines=f.readlines()
@@ -102,26 +118,31 @@ class sinadata300():
 
             #print(line)
             info=json.loads(line)
-            print(info)
+            #print(info)
             #print(info)
             for year in year_list:
-                print(year)
+
                 #print(year)
                 info["year"]=year
+                #print(info)
+                #print(year)
+
                # print(info)
                 #print(type(info))
                 self.info=json.dumps(info)
-                print(self.info)
+                #print(self.info)
 
                 self.req(self.info)
 
-                self.write_json()
+
+        self.write_json()
 
 
 
     def write_json(self):
         try:
             for j in self.json:
+                #print(j)
                 #print(j.decode('unicode-escape'))
                 with open('./data.json', 'a') as f:
                     #json.dump(j, f,ensure_ascii=False)
